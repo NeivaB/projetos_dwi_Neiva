@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <input type="text" id='Nome'/>
+    <button onclick="pokemon()">Buscar</button>
+    <div class="pokemon" id="pokemon">
+         <img id="imagem_personagem" src="" alt="">
+         <h2 id="nome"></h2>
+         <p id="id"></p>
+    </div>
+</body>
+<script>
+    
+const pokemon = ()=>{
+    const nome = document.getElementById("Nome").value ;
+      $.ajax({
+        url: `https://pokeapi.co/api/v2/pokemon/${nome}`,
+        type:"get",
+        success: function(result){
+            console.log(result)
+            if(result.sprites){ 
+                document.getElementById("pokemon").style.display = "block";
+            }
+            document.getElementById('imagem_personagem').src = result.sprites.back_default
+            document.getElementById('nome').innerHTML = result.species.name
+            document.getElementById('id').innerHTML = result.id
+        }
+    })
+
+}
+
+</script>
+
+<style>
+    .pokemon{
+    border: 10px solid red;
+    width: 30%;
+    border-radius: 1rem;
+    padding: 1rem;
+    margin-top: 1rem;
+    position: relative;
+    text-align: center;
+    }
+    #nome{
+    border: 1px solid;
+    border-radius: 1rem;
+    padding: 0.5rem;
+    text-transform: capitalize;
+    background: #0000ff5c;
+    color: #FFF;
+    }
+    #id{
+    background: blue;
+    width: 10%;
+    bottom: -3%;
+    right: 0;
+    position: absolute;
+    border-radius: 100%;
+    color: white;
+    font-weight: bold;}
+    
+    #imagem_personagem{
+        width: 200px;
+        height: 200px;
+        box-shadow: 9px 3px 11px rgb(216 33 33 / 77%);
+    }
+    .pokemon{
+        display: none;
+    }
+    button{
+        background: red;
+    color: #fff;
+    border-color: red;
+    }
+    button:hover{
+        background: blue;
+    color: #fff;
+    border-color: blue;
+    }
+</style>
+
+</html>
