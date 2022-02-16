@@ -69,7 +69,7 @@
             success: function (result) {
                 console.log(result)
 
-                document.getElementById('imagem_personagem').src = result.sprites.back_default
+                document.getElementById('imagem_personagem').src = result.sprites.front_default
                 document.getElementById('nome').innerHTML = result.species.name
                 document.getElementById('id').innerHTML = result.id
 
