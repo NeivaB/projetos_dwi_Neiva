@@ -36,12 +36,17 @@
                 <div class="visor">
                     <img id="imagem_personagem" src="" alt="">
                 </div>
-                <ul class="infos-pokemon-nome">
-                    <li id="nome"></li>
-                </ul>
+                <div id="resultado">
+                    <div id="container_nome"></div>
+                    <div id="container_tipos"></div>
+                    <div id="container_golpes"></div>
+                    <ul class="infos-pokemon-nome">
+                        <li id="nome"></li>
+                    </ul>
 
-                <div class="botoes">
-                    <span id="id"></span>
+                    <div class="botoes">
+                        <span id="id"></span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -67,15 +72,48 @@
             url: `https://pokeapi.co/api/v2/pokemon/${idPersonagem}`,
             type: "get",
             success: function (result) {
-                console.log(result)
 
-                document.getElementById('imagem_personagem').src = result.sprites.front_default
-                document.getElementById('nome').innerHTML = result.species.name
                 document.getElementById('id').innerHTML = result.id
 
+                construirImagemHtml(result.sprites.front_default)
+                construirNomeHtml(result.name)
+                construirTiposHtml(result.types)
+                construirGolpesHtml(result.moves)
             }
         });
     }
+
+
+    function construirImagemHtml(urlImagem) {
+        console.log("construindo imagem")
+        document.getElementById("imagem_personagem").src = urlImagem
+    }
+
+    function construirNomeHtml(nome) {
+        console.log("construindo nome")
+        document.getElementById("container_nome").innerHTML = nome
+    }
+
+    function construirTiposHtml(tiposPokemon) {
+        console.log("construindo tipos")
+        const containerTipos = document.getElementById("container_tipos")
+        containerTipos.innerHTML = ""
+        tiposPokemon.forEach(tipo => {
+            containerTipos.innerHTML += `<div class="tipoBox cor-${tipo.type.name}">${tipo.type.name}</div>`
+        });
+
+    }
+
+    function construirGolpesHtml(golpes) {
+        console.log("construindo golpes")
+        const containerGolpes = document.getElementById("container_golpes")
+        containerGolpes.innerHTML = ""
+        golpes.forEach(function (golpe) {
+            containerGolpes.innerHTML += `<div>${golpe.move.name}</div>`
+            console.log(golpe.move.name)
+        })
+    }
+
 
 </script>
 <style>
@@ -184,12 +222,42 @@
         background-color: rgb(221, 116, 165);
 
         border: solid blue 2px;
-        height: 240px;
-        width: 180px;
+        height: 350px;
+        width: 220px;
         border-radius: 10px;
         display: flex;
         align-items: center;
         flex-direction: column;
+    }
+
+    #container_tipos {
+        display: flex;
+        flex-direction: row;
+    }
+
+    #container_golpes {
+        overflow-y: auto;
+        height: 100px;
+        background-color: rgb(221, 173, 201);
+
+
+    }
+
+    .tipoBox {
+        background-color: gray;
+        padding: 3px;
+        border: solid black 2px;
+        border-radius: 15px;
+        margin: 3px;
+        color: white;
+    }
+
+    .cor-grass {
+        background-color: green;
+    }
+
+    .cor-poison {
+        background-color: purple;
     }
 
     .area.menu-grid-item.menu-flex-container a {
@@ -197,11 +265,12 @@
         margin: 0.5rem auto;
     }
 
-    .infos-pokemon-nome {
+    #container_nome {
         border: 1px solid rgb(6, 6, 122);
         width: 80%;
         border-radius: 1rem;
         background-color: blue;
+        color: white;
     }
 
     .infos-pokemon-nome li {
@@ -210,8 +279,8 @@
 
     .visor {
         margin-top: 10px;
-        height: 90px;
-        width: 90px;
+        height: 100px;
+        width: 100px;
         background-color: #FFF;
         border: solid white 10px;
         border-radius: 10px;
@@ -234,6 +303,7 @@
         width: 2rem;
         border-radius: 100%;
         border: solid white 3px;
+        color: white;
     }
 
     .botoes span {
